@@ -9,7 +9,7 @@ class Song {
 
 class Playlist with SearchMixin {
   final String name;
-  final List<Song> songs;
+  List<Song> songs;
 
   Playlist(this.name, this.songs);
 }
@@ -23,24 +23,12 @@ extension TotalDuration on List<Song> {
 
 // search by name or artist
 mixin SearchMixin {
-  searchByText(String text) {
-    return songs
+  searchByText(List<Song> mySongs, String text) {
+    return mySongs
         .where((song) => song.name.contains(text) || song.artist.contains(text))
         .toList();
   }
 }
-
-// list of songs
-var songs = [
-  Song('Shape of You', 'Ed Sheeran', const Duration(seconds: 180), 2017),
-  Song('Despacito', 'Luis Fonsi', const Duration(seconds: 180), 2017),
-  Song('Perfect', 'Ed Sheeran', const Duration(seconds: 180), 2017),
-  Song('Havana', 'Camila Cabello', const Duration(seconds: 180), 2017),
-  Song('God Plan', 'Drake', const Duration(seconds: 180), 2018),
-  Song('In My Feelings', 'Drake', const Duration(seconds: 180), 2018),
-  Song('Girls Like You', 'Maroon 5', const Duration(seconds: 254), 2018),
-  Song('Taki Taki', 'DJ Snake', const Duration(seconds: 180), 2018),
-];
 
 // output of the playlist in a formatted form
 void printPlaylist(Playlist playlist) {
@@ -62,7 +50,7 @@ void printPlaylist(Playlist playlist) {
 
 // output filtered playlist
 void printFilteredPlatlist(Playlist playlist, String condition) {
-  List<Song> filterdPlaylist = playlist.searchByText(condition);
+  List<Song> filterdPlaylist = playlist.searchByText(playlist.songs, condition);
   int filterdPlaylistDuration = 0;
   int durationMinutes, durationSeconds = 0;
   for (int i = 0; i < filterdPlaylist.length; i++) {
@@ -83,6 +71,18 @@ void printFilteredPlatlist(Playlist playlist, String condition) {
 }
 
 void main() {
+  // list of songs
+  var songs = [
+    Song('Shape of You', 'Ed Sheeran', const Duration(seconds: 180), 2017),
+    Song('Despacito', 'Luis Fonsi', const Duration(seconds: 180), 2017),
+    Song('Perfect', 'Ed Sheeran', const Duration(seconds: 180), 2017),
+    Song('Havana', 'Camila Cabello', const Duration(seconds: 180), 2017),
+    Song('God Plan', 'Drake', const Duration(seconds: 180), 2018),
+    Song('In My Feelings', 'Drake', const Duration(seconds: 180), 2018),
+    Song('Girls Like You', 'Maroon 5', const Duration(seconds: 254), 2018),
+    Song('Taki Taki', 'DJ Snake', const Duration(seconds: 180), 2018),
+  ];
+
   Playlist playlist = Playlist('playlist1', songs);
 
   printPlaylist(playlist);
