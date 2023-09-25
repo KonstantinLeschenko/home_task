@@ -7,7 +7,7 @@ class Song {
   Song(this.name, this.artist, this.duration, this.yearOfRelease);
 }
 
-class Playlist {
+class Playlist with SearchMixin {
   final String name;
   final List<Song> songs;
 
@@ -22,7 +22,7 @@ extension TotalDuration on List<Song> {
 }
 
 // search by name or artist
-extension Search on Playlist {
+mixin SearchMixin {
   searchByText(String text) {
     return songs
         .where((song) => song.name.contains(text) || song.artist.contains(text))
