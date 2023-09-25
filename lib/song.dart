@@ -68,6 +68,7 @@ void printFilteredPlatlist(Playlist playlist, String condition) {
   print(
       'Filtered Playlist Duration is $durationMinutes min. $durationSeconds sec.');
   print('***');
+  print('***');
 }
 
 void main() {
@@ -83,9 +84,12 @@ void main() {
     Song('Taki Taki', 'DJ Snake', const Duration(seconds: 180), 2018),
   ];
 
+  // initialiaxe playlist
   Playlist playlist = Playlist('playlist1', songs);
 
+  //print total playlist
   printPlaylist(playlist);
-
+  
+  // print filtered playlist
   printFilteredPlatlist(playlist, 'ou');
 }
