@@ -87,5 +87,5 @@ void main() {
 
   printPlaylist(playlist);
 
-  printFilteredPlatlist(playlist, 'You');
+  printFilteredPlatlist(playlist, 'ou');
 }
