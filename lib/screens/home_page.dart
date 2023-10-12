@@ -12,29 +12,19 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   late String title;
+  late List<ArtWork> myArts;
 
   @override
   void initState() {
     super.initState();
     setState(() {
       title = 'Art Works';
+      myArts = Artworks().arts;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    Size myScreen = MediaQuery.sizeOf(context);
-    List<ArtWork> myArts;
-
-    if (title == 'Art Works') {
-      myArts = Artworks().arts;
-    } else {
-      myArts = Artworks()
-          .arts
-          .where((element) => element.category.contains(title))
-          .toList();
-    }
-
     return Scaffold(
         appBar: AppBar(
           title: Text(title),
@@ -51,6 +41,7 @@ class _HomePageState extends State<HomePage> {
                   function: () {
                     setState(() {
                       title = 'Baroque';
+                      setCategory(title);
                     });
                     Navigator.pop(context);
                   },
@@ -61,6 +52,7 @@ class _HomePageState extends State<HomePage> {
                   function: () {
                     setState(() {
                       title = 'Cubism';
+                      setCategory(title);
                     });
                     Navigator.pop(context);
                   },
@@ -71,6 +63,7 @@ class _HomePageState extends State<HomePage> {
                   function: () {
                     setState(() {
                       title = 'Landscape';
+                      setCategory(title);
                     });
                     Navigator.pop(context);
                   },
@@ -81,6 +74,7 @@ class _HomePageState extends State<HomePage> {
                   function: () {
                     setState(() {
                       title = 'Renaissance';
+                      setCategory(title);
                     });
                     Navigator.pop(context);
                   },
@@ -91,6 +85,7 @@ class _HomePageState extends State<HomePage> {
                   function: () {
                     setState(() {
                       title = 'Surrealism';
+                      setCategory(title);
                     });
                     Navigator.pop(context);
                   },
@@ -116,36 +111,9 @@ class _HomePageState extends State<HomePage> {
             )
           ],
         )),
-        body: CustomScrollView(
-          slivers: <Widget>[
-            SliverGrid(
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: myScreen.width <= 600 ? 2 : 3,
-              ),
-              delegate: SliverChildBuilderDelegate(
-                (context, index) {
-                  return GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  AboutArtWork(myArtWork: myArts[index])));
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Image.asset(
-                        myArts[index].assetPath,
-                        fit: BoxFit.fill,
-                      ),
-                    ),
-                  );
-                },
-                childCount: myArts.length,
-              ),
-            ),
-          ],
-        ),
+        body: MediaQuery.sizeOf(context).width > 400
+            ? myGridView()
+            : myListView(),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
             final snackBar = SnackBar(
@@ -156,5 +124,77 @@ class _HomePageState extends State<HomePage> {
           },
           child: const Icon(Icons.info_outline),
         ));
+  }
+
+  CustomScrollView myGridView() {
+    return CustomScrollView(
+      slivers: <Widget>[
+        SliverGrid(
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: MediaQuery.sizeOf(context).width <= 600 ? 2 : 3,
+          ),
+          delegate: SliverChildBuilderDelegate(
+            (context, index) {
+              return GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              AboutArtWork(myArtWork: myArts[index])));
+                },
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Image.asset(
+                    myArts[index].assetPath,
+                    fit: BoxFit.fill,
+                  ),
+                ),
+              );
+            },
+            childCount: myArts.length,
+          ),
+        ),
+      ],
+    );
+  }
+
+  CustomScrollView myListView() {
+    return CustomScrollView(
+      slivers: <Widget>[
+        SliverList(
+            delegate: SliverChildBuilderDelegate(
+          (context, index) {
+            return GestureDetector(
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            AboutArtWork(myArtWork: myArts[index])));
+              },
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Image.asset(
+                  //
+                  myArts[index].assetPath,
+                  fit: BoxFit.scaleDown,
+                  width: 250,
+                  height: 250,
+                ),
+              ),
+            );
+          },
+          childCount: myArts.length,
+        ))
+      ],
+    );
+  }
+
+  void setCategory(String title) {
+    myArts = Artworks()
+        .arts
+        .where((element) => element.category.contains(title))
+        .toList();
   }
 }
