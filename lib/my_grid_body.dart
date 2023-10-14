@@ -9,15 +9,14 @@ class MyGridBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GridView.builder(
-      itemCount: FavoritRecipes().favoritRecipes.length,
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2), 
-      itemBuilder: (BuildContext context, int index) {
-        return MyGridTile(
-          assetName: FavoritRecipes().favoritRecipes[index].assetPath, 
-          recipe: FavoritRecipes().favoritRecipes[index].name,
-          time: FavoritRecipes().favoritRecipes[index].time);
-      });
+        itemCount: FavoritRecipes().favoritRecipes.length,
+        gridDelegate:
+            const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+        itemBuilder: (BuildContext context, int index) {
+          return MyGridTile(
+              assetName: FavoritRecipes().favoritRecipes[index].assetPath,
+              recipe: FavoritRecipes().favoritRecipes[index].name,
+              time: FavoritRecipes().favoritRecipes[index].time);
+        });
   }
 }
-
-// ?
