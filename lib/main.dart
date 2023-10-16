@@ -15,10 +15,6 @@ class MyApp extends StatefulWidget {
 
   @override
   State<MyApp> createState() => _MyAppState();
-  static void setLocale(BuildContext context, Locale newLocale) {
-    _MyAppState? state = context.findAncestorStateOfType<_MyAppState>();
-    state?.setLocale(newLocale);
-  }
 }
 
 class _MyAppState extends State<MyApp> {
@@ -82,6 +78,13 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  void changeLocale(String text) {
+    setState(() {
+      _MyAppState? state = context.findAncestorStateOfType<_MyAppState>();
+      state?.setLocale(Locale(text));
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     TextTheme textTheme = Theme.of(context).textTheme;
@@ -115,7 +118,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             TextButton(
                 onPressed: () {
-                  MyApp.setLocale(context, const Locale('en'));
+                  changeLocale('en');
                   Navigator.pop(context);
                 },
                 child: const Text('English')),
@@ -124,7 +127,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             TextButton(
                 onPressed: () {
-                  MyApp.setLocale(context, const Locale('ru'));
+                  changeLocale('ru');
                   Navigator.pop(context);
                 },
                 child: const Text('Русский')),
@@ -133,7 +136,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             TextButton(
                 onPressed: () {
-                  MyApp.setLocale(context, const Locale('uk'));
+                  changeLocale('uk');
                   Navigator.pop(context);
                 },
                 child: const Text('Українська')),
@@ -232,7 +235,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     style: textTheme.displaySmall,
                   )),
             ],
-          )
+          ),
         ],
       ),
     );
